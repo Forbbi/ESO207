@@ -194,6 +194,8 @@ void function2(){
         int i,j;
         scanf("%d",&i);
         scanf("%d",&j);
+        j--;
+        i--;
         int l=j-i+1;
         int answer = min(matrix[i][lg[l]], matrix[j-(1<<lg[l])+1][lg[l]]);
         printf("%d\n",answer);
