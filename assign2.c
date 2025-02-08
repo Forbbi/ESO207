@@ -6,91 +6,46 @@
 #define maxsize 909000
 #define MOD 1000000007LL
 #define min(a, b) ((a) < (b) ? (a) : (b))
-void compute_k_scores(int *array, int n, int *k_scores, int max_val) {
-    int *left = (int *)malloc(n * sizeof(int));
-    int *right = (int *)malloc(n * sizeof(int));
-    int *stack = (int *)malloc(n * sizeof(int));
-    int top = -1;
-    for (int i = 0; i < n; i++) {
-        left[i] = -1;
-        right[i] = n;
-    }
-    for (int i = 0; i < n; i++) {
-        while (top >= 0 && array[stack[top]] >= array[i]) {
-            top--;
-        }
-        if (top >= 0) {
-            left[i] = stack[top];
-        }
-        stack[++top] = i;
-    }
-    top = -1;
-    for (int i = n - 1; i >= 0; i--) {
-        while (top >= 0 && array[stack[top]] >= array[i]) {
-            top--;
-        }
-        if (top >= 0) {
-            right[i] = stack[top];
-        }
-        stack[++top] = i;
-    }
-    for (int i = 0; i < n; i++) {
-        int k = array[i];
-        int length = right[i] - left[i] - 1;
-        if (k_scores[k] < length) {
-            k_scores[k] = length;
-        }
-    }
-    free(left);
-    free(right);
-    free(stack);
-}
-
-void answer_queries(int *k_scores, int max_val, int *queries, int q, int *results) {
-    for (int i = 0; i < q; i++) {
-        int k = queries[i];
-        if (k <= max_val) {
-            results[i] = k_scores[k];
-        } else {
-            results[i] = 0;
-        }   }
-}
-void function4(){
+#define MAX_N 100005
+#define MAX_VAL 100005 
+void function4() {
     int n, q;
     scanf("%d %d", &n, &q);
-    int *array = (int *)malloc(n * sizeof(int));
-    int max_val = 0;
+    int v[MAX_N], left[MAX_N], right[MAX_N];
     for (int i = 0; i < n; i++) {
-        scanf("%d", &array[i]);
-        if (array[i] > max_val) {
-        max_val = array[i];
+        scanf("%d", &v[i]);
     }
+    int stack[MAX_N], top = -1;
+    for (int i = 0; i < n; i++) {
+        while (top >= 0 && v[stack[top]] >= v[i]) {
+            top--;
+        }
+        left[i] = (top == -1) ? 0 : stack[top] + 1;
+        stack[++top] = i;
+    }
+    top = -1;  
+    for (int i = n - 1; i >= 0; i--) {
+        while (top >= 0 && v[stack[top]] > v[i]) {
+            top--;
+        }
+        right[i] = (top == -1) ? n - 1 : stack[top] - 1;
+        stack[++top] = i;
+    }
+    int max_length[MAX_VAL] = {0};
+    for (int i = 0; i < n; i++) {
+        int k = v[i];
+        int length = right[i] - left[i] + 1;
+        if (length > max_length[k]) {
+            max_length[k] = length;
+        }
+    }
+    while (q--) {
+        int x;
+        scanf("%d", &x);
+        printf("%d\n", (x < MAX_VAL) ? max_length[x] : 0);
     }
 
-    int *queries = (int *)malloc(q * sizeof(int));
-    for (int i = 0; i < q; i++) {
-    scanf("%d", &queries[i]);
-    }
-
-    int *k_scores = (int *)calloc(max_val + 1, sizeof(int));
-
-    compute_k_scores(array, n, k_scores, max_val);
-
-    int *results = (int *)malloc(q * sizeof(int));
-
-    answer_queries(k_scores, max_val, queries, q, results);
-
-    for (int i = 0; i < q; i++) {
-printf("%d\n", results[i]);
-    }
-
-    free(array);
-    free(queries);
-    free(k_scores);
-    free(results);
 }
-
-
 
 
 
