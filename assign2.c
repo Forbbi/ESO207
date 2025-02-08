@@ -25,7 +25,7 @@ void function4() {
     }
     top = -1;  
     for (int i = n - 1; i >= 0; i--) {
-        while (top >= 0 && v[stack[top]] > v[i]) {
+        while (top >= 0 && v[stack[top]] >= v[i]) {
             top--;
         }
         right[i] = (top == -1) ? n - 1 : stack[top] - 1;
