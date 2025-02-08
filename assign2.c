@@ -53,31 +53,34 @@ void function4() {
 void function1(){
     int arr[maxsize];
     int maxarr[maxsize];
-    int q;
-    int front=0,back=0,max_front=0,max_back=-1;
-    scanf("%d",&q);
-    while(q--){
+     int q;
+    int front = 0, back = 0, max_front = 0, max_back = -1; 
+    scanf("%d", &q);
+    while (q--) {
         int x;
-        scanf("%d",&x);
-        if(x==1){
+        scanf("%d", &x);
+        if (x == 1) { 
             int a;
-            scanf("%d",&a);
-            arr[back]=a;
-            back++;
-            while(max_back>=max_front&&maxarr[max_back]<a){
+            scanf("%d", &a);
+            arr[back] = a;
+            back = (back + 1) % MAXSIZE; 
+            
+            
+            while (max_back >= max_front && maxarr[max_back % MAXSIZE] < a) {
                 max_back--;
             }
-            maxarr[++max_back]=a;
-        }else if(x==2){
-            int a=arr[front];
-            if(max_front<=max_back&&maxarr[max_front]==a){
+            maxarr[++max_back % MAXSIZE] = a;
+            
+        } else if (x == 2) { 
+            int a = arr[front];
+            if (max_front <= max_back && maxarr[max_front % MAXSIZE] == a) {
                 max_front++;
             }
-            front++;
-        }else{
-            printf("%d\n",maxarr[max_front]);
+            front = (front + 1) % MAXSIZE; 
+            
+        } else { 
+            printf("%d\n", maxarr[max_front % MAXSIZE]);
         }
-
     }
 }
 
